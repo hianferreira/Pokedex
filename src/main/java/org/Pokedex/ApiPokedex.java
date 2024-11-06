@@ -8,7 +8,6 @@ public class ApiPokedex {
     private String name;
     private String type;
     private String height;
-    @SerializedName("weight")
     private String weight;
     private String description;
 

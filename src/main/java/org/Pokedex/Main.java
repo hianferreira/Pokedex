@@ -14,11 +14,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            Scanner scanner = new Scanner(System.in);
-            String pokemon = scanner.nextLine();
-
             // URL da API para a requisição GET
-            String urlApi = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
+            String urlApi = "https://pokeapi.co/api/v2/pokemon/pikachu";
 
             // Cria um cliente HttpClient
             HttpClient client = HttpClient.newHttpClient();
@@ -34,12 +31,6 @@ public class Main {
             if (response.statusCode() == HttpURLConnection.HTTP_OK) {
                 System.out.println("Status Code: " + response.statusCode());
                 System.out.println("Resposta: " + response.body());
-
-                // Cria um Gson com o padrão Camel Case
-                Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
-
-                String json = response.body();
-                gson.fromJson(json, ApiPokedex.class);
 
             }
         } catch (Exception e) {
