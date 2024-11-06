@@ -29,9 +29,8 @@ public class Main {
             // Envia a requisição e recebe a resposta
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Resposta: " + response.body());
                 System.out.println("Status Code: " + response.statusCode());
-
+                System.out.println("Resposta: " + response.body());
             }
         } catch (Exception e) {
             e.printStackTrace();
