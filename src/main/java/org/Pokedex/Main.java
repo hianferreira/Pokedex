@@ -1,41 +1,89 @@
 package org.Pokedex;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
+import javax.xml.transform.Source;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            // URL da API para a requisição GET
-            String urlApi = "https://pokeapi.co/api/v2/pokemon/pikachu";
 
-            // Cria um cliente HttpClient
-            HttpClient client = HttpClient.newHttpClient();
+        Boolean sucess = false;
+        int trys = 0;
+        int maxTrys = 5;
 
-            // Cria a requisição GET
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(urlApi))
-                    .GET()  // Define o método como GET
-                    .build();
+        while (!sucess && trys < maxTrys) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Insira seu pokemon: ");
+                String urlPokemon = scanner.nextLine();
+                // URL da API para a requisição GET
+                String urlApi = "https://pokeapi.co/api/v2/pokemon/" + urlPokemon.toLowerCase();
 
-            // Envia a requisição e recebe a resposta
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Status Code: " + response.statusCode());
-                System.out.println("Resposta: " + response.body());
+                // Cria um cliente HttpClient
+                HttpClient client = HttpClient.newHttpClient();
+
+                // Cria a requisição GET
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI(urlApi))
+                        .GET()  // Define o método como GET
+                        .build();
+
+                // Envia a requisição e recebe a resposta
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == HttpURLConnection.HTTP_OK) {
+                    String json = response.body();
+                    System.out.println("Status Code: " + response.statusCode());
+
+                    Gson gson = new Gson();
+
+                    Pokemon pokemon = gson.fromJson(json, Pokemon.class);
+
+                    System.out.println("Nome: " + pokemon.getName());
+                    for (Pokemon.Type type : pokemon.getTypes()) {
+                        if (type.getType().getTypeUrl() != null) {
+                            HttpClient typeClient = HttpClient.newHttpClient();
+
+                            HttpRequest TypeRequest = HttpRequest.newBuilder()
+                                    .uri(new URI(type.getType().getTypeUrl()))
+                                    .GET()
+                                    .build();
+
+                            HttpResponse<String> typeResponse = typeClient
+                                    .send(TypeRequest, HttpResponse.BodyHandlers.ofString());
+
+                            List<String> types = new ArrayList<>();
+                            if (typeResponse.statusCode() == HttpURLConnection.HTTP_OK) {
+                                Gson typeGson = new Gson();
+                                String typeJson = typeResponse.body();
+                                PokemonType pokemonType = typeGson.fromJson(typeJson, PokemonType.class);
+
+                                String weakness = pokemonType.getDamageRelations().getDoubleDamageFrom().toString();
+                                System.out.println("O tipo "+pokemonType.getName().toString()+" é fraco contra"+weakness);
+
+                            }
+                        }
+                    }
+                    System.out.println("Altura: " + pokemon.getHeightInMt() + "m");
+                    System.out.println("Peso: " + pokemon.getWeightInKg() + "kg");
+
+                    sucess = true;
+
+                } else {
+                    System.out.println("Erro na requisição: " + response.statusCode() + "\nNome de pokemon não listado, tente novamente");
+                    trys++;
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        ApiPokedex pokedex = new ApiPokedex();
-        System.out.println(pokedex.toString());
     }
 }
