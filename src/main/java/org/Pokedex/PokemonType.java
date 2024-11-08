@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PokemonType {
+public class PokemonType extends Functions {
 
-    public static class DamageRelations{
+    public static class DamageRelations extends Functions{
         @SerializedName("double_damage_from")
         private List<TypeInfo> doubleDamageFrom;
         @SerializedName("double_damage_to")
@@ -76,7 +76,7 @@ public class PokemonType {
                 '}';
     }
 
-    public static class TypeInfo{
+    public static class TypeInfo extends Functions{
         private String name;
 
         public String getName() {

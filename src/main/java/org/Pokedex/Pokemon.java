@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Pokemon {
+public class Pokemon extends Functions{
     private String name;
     private List<Type> types;
     private double height;
@@ -34,14 +34,14 @@ public class Pokemon {
     }
 
 
-    public static class Type {
+    public static class Type extends Functions {
         private typeInfo type;
 
         public typeInfo getType() {
             return type;
         }
 
-        public static class typeInfo {
+        public static class typeInfo extends Functions {
             @SerializedName("name")
             private String typeName;
             @SerializedName("url")

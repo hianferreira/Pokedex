@@ -2,7 +2,6 @@ package org.Pokedex;
 
 import com.google.gson.Gson;
 
-import javax.xml.transform.Source;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -22,7 +21,7 @@ public class Main {
         while (!sucess && trys < maxTrys) {
             try {
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Insira seu pokemon: ");
+                System.out.println("Insert your pokemon : ");
                 String urlPokemon = scanner.nextLine();
                 // URL da API para a requisição GET
                 String urlApi = "https://pokeapi.co/api/v2/pokemon/" + urlPokemon.toLowerCase();
@@ -47,7 +46,7 @@ public class Main {
 
                     Pokemon pokemon = gson.fromJson(json, Pokemon.class);
 
-                    System.out.println("Nome: " + pokemon.getName());
+                    System.out.println("Name: " + pokemon.firstLetterCaps(pokemon.getName()));
                     for (Pokemon.Type type : pokemon.getTypes()) {
                         if (type.getType().getTypeUrl() != null) {
                             HttpClient typeClient = HttpClient.newHttpClient();
@@ -66,14 +65,17 @@ public class Main {
                                 String typeJson = typeResponse.body();
                                 PokemonType pokemonType = typeGson.fromJson(typeJson, PokemonType.class);
 
+                                String currentType = pokemonType.firstLetterCaps(pokemonType.getName());
                                 String weakness = pokemonType.getDamageRelations().getDoubleDamageFrom().toString();
-                                System.out.println("O tipo "+pokemonType.getName().toString()+" é fraco contra"+weakness);
+
+                                System.out.println("Type: "+ currentType);
+                                System.out.println("The type "+currentType+" is weak against "+weakness);
 
                             }
                         }
                     }
-                    System.out.println("Altura: " + pokemon.getHeightInMt() + "m");
-                    System.out.println("Peso: " + pokemon.getWeightInKg() + "kg");
+                    System.out.println("Height: " + pokemon.getHeightInMt() + "m");
+                    System.out.println("Weight : " + pokemon.getWeightInKg() + "kg");
 
                     sucess = true;
 
