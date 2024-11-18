@@ -13,11 +13,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         Boolean sucess = false;
         int trys = 0;
         int maxTrys = 5;
-
         while (!sucess && trys < maxTrys) {
             try {
                 Scanner scanner = new Scanner(System.in);
@@ -68,8 +66,11 @@ public class Main {
                                 String currentType = pokemonType.firstLetterCaps(pokemonType.getName());
                                 String weakness = pokemonType.getDamageRelations().getDoubleDamageFrom().toString();
 
-                                System.out.println("Type: "+ currentType);
-                                System.out.println("The type "+currentType+" is weak against "+weakness);
+                                System.out.println("Type: " + currentType);
+                                System.out.println("The type " + currentType + " is weak against " + weakness);
+
+                                Functions exec = new Functions();
+                                exec.writeJsonFile("pokedex", pokemon, pokemonType);
 
                             }
                         }
@@ -78,14 +79,15 @@ public class Main {
                     System.out.println("Weight : " + pokemon.getWeightInKg() + "kg");
 
                     sucess = true;
-
                 } else {
                     System.out.println("Erro na requisição: " + response.statusCode() + "\nNome de pokemon não listado, tente novamente");
                     trys++;
                 }
             } catch (Exception error) {
-                error.printStackTrace();
+                System.out.println(error.getMessage());
             }
         }
     }
 }
+
+

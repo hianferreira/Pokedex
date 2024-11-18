@@ -46,14 +46,14 @@ public class PokemonType extends Functions {
 
         @Override
         public String toString() {
-            return "DamageRelations{" +
-                    "doubleDamageFrom=" + doubleDamageFrom +
-                    ", doubleDamageTo=" + doubleDamageTo +
-                    ", halfDamageFrom=" + halfDamageFrom +
-                    ", halfDamageTo=" + halfDamageTo +
-                    ", noDamageFrom=" + noDamageFrom +
-                    ", noDamageTo=" + noDamageTo +
-                    '}';
+            return "DamageRelations( " +
+                    "doubleDamageFrom = " + doubleDamageFrom +
+                    ", doubleDamageTo = " + doubleDamageTo +
+                    ", halfDamageFrom = " + halfDamageFrom +
+                    ", halfDamageTo = " + halfDamageTo +
+                    ", noDamageFrom = " + noDamageFrom +
+                    ", noDamageTo = " + noDamageTo +
+                    " )";
         }
     }
     private String name;
@@ -70,10 +70,10 @@ public class PokemonType extends Functions {
 
     @Override
     public String toString() {
-        return "PokemonType{" +
-                "name='" + name + '\'' +
+        return "PokemonType( " +
+                "name = " + name + '\'' +
                 ", damageRelations=" + damageRelations +
-                '}';
+                " )";
     }
 
     public static class TypeInfo extends Functions{
